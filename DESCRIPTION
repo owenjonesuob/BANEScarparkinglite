@@ -9,6 +9,7 @@ Description: Contains functions for importing and working with the BANES car par
   all datasets, see the repo at https://github.com/owenjonesuob/BANEScarparking.
 License: MIT + file LICENSE
 URL: https://github.com/owenjonesuob/BANEScarparkinglite
+BugReports: https://github.com/owenjonesuob/BANEScarparkinglite
 Imports:
     dplyr,
     httr,
