@@ -392,7 +392,7 @@ get_events_detail <- function(from, to) {
 #'  range.
 #' @examples
 #' # Return weather summary for 01 January 2015
-#' weather <- get_daily_weather("2015-01-01", "2015-01-02")
+#' weather <- get_daily_weather("2015-01-01", "2015-01-01")
 #' \dontrun{
 #' # Return daily weather summaries from 01 Oct 2014 to 17 Jul 2016
 #' weather <- get_daily_weather("2014-10-01", "2016-07-17")
