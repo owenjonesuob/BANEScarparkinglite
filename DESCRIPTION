@@ -8,7 +8,7 @@ Description: Contains functions for importing and working with the BANES car par
   records and other related datasets. For the full version of the package, including
   all datasets, see the repo at <https://github.com/owenjonesuob/BANEScarparking>.
   The original dataset of parking records can be found at
-  <[https://data.bathhacked.org/Government-and-Society/BANES-Historic-Car-Park-Occupancy/x29s-cczc]https://data.bathhacked.org/Government-and-Society/BANES-Historic-Car-Park-Occupancy/x29s-cczc>.
+  <https://data.bathhacked.org/Government-and-Society/BANES-Historic-Car-Park-Occupancy/x29s-cczc>.
 License: MIT + file LICENSE
 URL: https://github.com/owenjonesuob/BANEScarparkinglite
 BugReports: https://github.com/owenjonesuob/BANEScarparkinglite
