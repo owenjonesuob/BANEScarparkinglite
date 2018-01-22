@@ -1,7 +1,7 @@
 ## Resubmission
 This is a resubmission. Issues resolved are:
-* LICENSE file now conforms to CRAN template
-* URL in Description field now enclosed in angle brackets
+* LICENSE file now contains only YEAR and COPYRIGHT HOLDER fields
+* New, smaller examples added; examples previously wrapped in \dontrun{} are now either unwrapped (if small), or in the cases where execution would take >5s they are wrapped in \donttest{}
 
 ## Test environments
 * Local Windows installation, R 3.4.3
