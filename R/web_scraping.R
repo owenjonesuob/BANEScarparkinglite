@@ -415,8 +415,9 @@ get_daily_weather <- function(from, to) {
     # on the site only shows up to 398 records at once!)
     from_dates <- seq(lubridate::as_date(from), lubridate::as_date(to), by = "395 day")
     to_dates <- from_dates + 394
-    # Last one needs to be up to "to"
-    to_dates[length(to_dates)] <- lubridate::as_date(to)
+    # Last one needs to be up to "to" - and add 1 extra day, else single-day
+    # requests don't work
+    to_dates[length(to_dates)] <- lubridate::as_date(to) + 1
     
     
     # Initialise an empty data frame
@@ -499,6 +500,7 @@ get_daily_weather <- function(from, to) {
         
     }
     
-    # Return the table!
-    weather
+    # Return the table! (Trim the last row, because remember we had to ask for 1
+    # extra day)
+    weather[1:(nrow(weather)-1), ]
 }
