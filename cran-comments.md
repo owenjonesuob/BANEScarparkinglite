@@ -1,7 +1,6 @@
 ## Resubmission
 This is a resubmission. Issues resolved are:
-* LICENSE file now contains only YEAR and COPYRIGHT HOLDER fields
-* New, smaller examples added for several functions; examples previously wrapped in \dontrun{} are now either unwrapped (if small), or in the cases where execution would likely take >5s they are wrapped in \donttest{}
+* URLs in Description field wrapped in angle brackets
 
 ## Test environments
 * Local Windows installation, R 3.4.3
