@@ -28,17 +28,23 @@ The full [BANEScarparking](https://github.com/owenjonesuob/BANEScarparking) pack
 
 ### **Installation**
 
-To install the package just run this command in the R console:
+You can install the package from CRAN:
 ```
-devtools::install_github("Bath-ML/parking", subdir = "r/BANEScarparkinglite")
+install.packages("BANEScarparkinglite")
 ```
-You'll need the `devtools` package to do this - you can install it with `install.packages("devtools")`
+
+(Or if you want to keep up to date with the latest changes, you can install the development version with
+```
+devtools::install_github("owenjonesuob/BANEScarparkinglite")
+```
+You'll need the `devtools` package to do this - you can install it with `install.packages("devtools")`.)
+
 
 Then you can load the package with
 ```
 library(BANEScarparkinglite)
 ```
-and you should be good to go!
+and you'll be good to go!
 
 ---
 
