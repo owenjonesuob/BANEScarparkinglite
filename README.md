@@ -12,6 +12,7 @@ Contributors so far:
 
 * Owen Jones ([@owenjonesuob](https://github.com/owenjonesuob))
 * Ryan Kenning ([@rkenning](https://github.com/rkenning))
+* Nick Howlett ([@niklz](https://github.com/niklz))
 
 ---
 
@@ -22,7 +23,7 @@ Contributors so far:
 * `refuel` and `refuel_crude` for updating existing data frames with recent records
 * `get_rugby`, `get_events` (and `get_events_detail`) and `get_daily_weather` for obtaining information through web-scraping.
 
-The full [BANEScarparking](https://github.com/owenjonesuob/BANEScarparking) package contains all of these functions, along with parking, events and rugby data up to the end of 2016 (stored as R datasets).
+The full [BANEScarparking](https://github.com/owenjonesuob/BANEScarparking) package contains all of these functions, along with parking, events, rugby and weather data up to the end of 2017 (stored as R datasets).
 
 ---
 
