@@ -3,6 +3,10 @@
 
 # Specify the language to use
 language: r
+r:
+  - oldrel
+  - release
+  - devel
 
 # Tell Travis to cache packages once it installs them, in order to speed up
 # build times
