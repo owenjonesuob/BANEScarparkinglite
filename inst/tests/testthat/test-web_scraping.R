@@ -17,16 +17,17 @@ test_that("Rugby", {
 })
 
 
+# Function is broken so has been removed, for now
 
-test_that("Weather", {
-    
-    skip_if(!has_internet())
-    
-    
-    weather <- get_daily_weather("2015-01-01", "2016-05-01")
-    expect_equal(nrow(weather), 
-                 as.integer(as.Date("2016-05-01") - as.Date("2015-01-01")) + 1)
-})
+# test_that("Weather", {
+#     
+#     skip_if(!has_internet())
+#     
+#     
+#     weather <- get_daily_weather("2015-01-01", "2016-05-01")
+#     expect_equal(nrow(weather), 
+#                  as.integer(as.Date("2016-05-01") - as.Date("2015-01-01")) + 1)
+# })
 
 
 

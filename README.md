@@ -49,6 +49,6 @@ and you'll be good to go!
 
 ---
 
-**Version:** 0.1.1 (released 2018-01-20)
+**Version:** 0.1.2 (released 2018-06-30)
 
 **Contact:** Owen Jones (olj23@bath.ac.uk)

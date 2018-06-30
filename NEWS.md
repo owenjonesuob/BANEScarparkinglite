@@ -1,3 +1,14 @@
+BANEScarparkinglite v0.1.2 (Release date: 2018-06-30)
+=====================================================
+
+Deletions:
+
+* Changes to the Wunderground website have left `get_daily_weather` floundering - it has been removed until a suitable alternative can be found!
+
+
+
+
+
 BANEScarparkinglite v0.1.1 (Release date: 2018-01-20)
 =====================================================
 
