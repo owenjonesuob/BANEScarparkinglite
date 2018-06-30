@@ -377,130 +377,130 @@ get_events_detail <- function(from, to) {
 
 
 
+## Deprecated for now - requires significant work following changes to webpage
 
-
-#' Scrape daily weather records for Bath
-#'
-#' This function scrapes the \href{https://www.wunderground.com/}{Wunderground}
-#'  website to get daily weather summaries for Bath over a given date range.
-#'
-#' @param from A date or date-time object, or YYYY-MM-DD string: the first day
-#'  from which to get a weather summary.
-#' @param to A date or date-time object, or YYYY-MM-DD string: the last day
-#'  from which to get a weather summary.
-#' @return A data frame of daily weather summaries for each day in the specified
-#'  range.
-#' @examples
-#' # Return weather summary for 01 January 2015
-#' weather <- get_daily_weather("2015-01-01", "2015-01-01")
-#' \dontrun{
-#' # Return daily weather summaries from 01 Oct 2014 to 17 Jul 2016
-#' weather <- get_daily_weather("2014-10-01", "2016-07-17")
-#'
-#'
-#' # Return daily event counts for all days in date range of parking records
-#' 
-#' library(lubridate)
-#'
-#' raw_data <- get_all_crude()
-#' df <- refine(raw_data)
-#'
-#' weather <- rbind(get_daily_weather(min(df$LastUpdate), max(df$LastUpdate))
-#' }
-#' @export
-
-get_daily_weather <- function(from, to) {
-    
-    # If we've been asked for more than 398 records, chop into chunks (table
-    # on the site only shows up to 398 records at once!)
-    from_dates <- seq(lubridate::as_date(from), lubridate::as_date(to), by = "395 day")
-    to_dates <- from_dates + 394
-    # Last one needs to be up to "to" - and add 1 extra day, else single-day
-    # requests don't work
-    to_dates[length(to_dates)] <- lubridate::as_date(to) + 1
-    
-    
-    # Initialise an empty data frame
-    weather <- data.frame()
-    
-    
-    for (i in seq_along(from_dates)) {
-        
-        # Make start date into correct format, and extract numbers from end date
-        from_day <- gsub("-", "/", as.character(from_dates[i]))
-        day_end <- lubridate::day(to_dates[i])
-        month_end <- lubridate::month(to_dates[i])
-        year_end <- lubridate::year(to_dates[i])
-        
-        
-        
-        
-        # Set up the URL query (EGTG is closest location to Bath)
-        url <- paste0("https://www.wunderground.com/history/airport/EGTG/",
-                      from_day,
-                      "/CustomHistory.html?dayend=", day_end,
-                      "&monthend=", month_end,
-                      "&yearend=", year_end,
-                      "&req_city=&req_state=&req_statename=&reqdb.zip=&reqdb.magic=&reqdb.wmo=")
-        
-        # Get the HTML content of the webpage
-        wg <- xml2::read_html(url)
-        
-        # Find the second table on the webpage (the massive weather table)
-        wgtab <- rvest::html_table(wg, header = FALSE)[[2]]
-        
-        # Set column names
-        names(wgtab) <- c("GMT", "max_temp_c", "mean_temp_c",
-                          "min_temp_c", "max_dewpoint_c", "mean_dewpoint_c",
-                          "min_dewpoint_c", "max_humidity", "mean_humidity",
-                          "min_humidity", "max_pressure_hpa",
-                          "mean_pressure_hpa", "min_pressure_hpa",
-                          "max_visibility_km", "mean_visibility_km", "min_visibility_km",
-                          "max_wind_kmph", "mean_wind_kmph",
-                          "max_gust_kmph", "precip_mm", "precip_type")
-        
-        # The GMT column of the table currently contains years, months AND days;
-        # we'll use regex to separate them out into new columns
-        #   First, if GMT contains a 1 or 2-digit number then this must be a day
-        #   number, so put this number into a new column; or put in an NA if GMT
-        #   did NOT contain a1 or 2-digit number
-        wgtab <- dplyr::mutate(wgtab, day = ifelse(grepl("^\\d{1,2}$", GMT), GMT, NA),
-                               # Do the same for 3-character strings (month names)
-                               month = ifelse(grepl("^[A-Za-z]{3}$", GMT), GMT, NA),
-                               # Do the same for 4-digit numbers (year numbers)
-                               year = ifelse(grepl("^\\d{4}$", GMT), GMT, NA)) %>%
-            # Whenever there's an NA in the month or year columns (i.e. most of the
-            # time!) fill in each block of NAs with the first previous non-NA value;
-            #   e.g. Jan  becomes  Jan
-            #        NA            Jan
-            #        NA            Jan
-            #        Feb           Feb
-            #        NA            Feb
-            dplyr::mutate(month = zoo::na.locf(month, na.rm = FALSE),
-                          year = zoo::na.locf(year, na.rm = FALSE)) %>%
-            # Wherever there's an NA in the day column, this was a row containing
-            # (unnecessary) headers, rather than data; so we drop these rows
-            dplyr::filter(!is.na(day)) %>%
-            # Now we stick the year-month-day columns together and convert to a date
-            dplyr::mutate(Date = lubridate::ymd(paste(year, month, day, sep = "-"))) %>%
-            # Then we can drop the old GMT column and the year-month-day columns
-            dplyr::select(-day, -month, -year, -GMT) %>%
-            # Re-order the columns to get Date on the left (currently on the right)
-            dplyr::select(Date, dplyr::everything()) %>%
-            # Lastly, the max_gust_kmph column is always empty, and precip_type
-            # column needs splitting into separate columns
-            dplyr::mutate("was_rainy" = grepl("Rain", precip_type),
-                          "was_snowy" = grepl("Snow", precip_type),
-                          "was_foggy" = grepl("Fog", precip_type)) %>%
-            dplyr::select(-max_gust_kmph, -precip_type)
-        
-        
-        # Add this set or records to the table
-        weather <- dplyr::bind_rows(weather, wgtab)
-        
-    }
-    
-    # Return the table! (Trim the last row, because remember we had to ask for 1
-    # extra day)
-    weather[1:(nrow(weather)-1), ]
-}
+# #' Scrape daily weather records for Bath
+# #' 
+# #' This function scrapes the \href{https://www.wunderground.com/}{Wunderground}
+# #'  website to get daily weather summaries for Bath over a given date range.
+# #' 
+# #' @param from A date or date-time object, or YYYY-MM-DD string: the first day
+# #'  from which to get a weather summary.
+# #' @param to A date or date-time object, or YYYY-MM-DD string: the last day
+# #'  from which to get a weather summary.
+# #' @return A data frame of daily weather summaries for each day in the specified
+# #'  range.
+# #' @examples
+# #' # Return weather summary for 01 January 2015
+# #' weather <- get_daily_weather("2015-01-01", "2015-01-01")
+# #' \dontrun{
+# #' # Return daily weather summaries from 01 Oct 2014 to 17 Jul 2016
+# #' weather <- get_daily_weather("2014-10-01", "2016-07-17")
+# #' 
+# #' 
+# #' # Return daily weather records for all days in date range of parking records
+# #' 
+# #' library(lubridate)
+# #' 
+# #' raw_data <- get_all_crude()
+# #' df <- refine(raw_data)
+# #' 
+# #' weather <- rbind(get_daily_weather(min(df$LastUpdate), max(df$LastUpdate))
+# #' }
+# #' @export
+#
+# get_daily_weather <- function(from, to) {
+#     
+#     # If we've been asked for more than 398 records, chop into chunks (table
+#     # on the site only shows up to 398 records at once!)
+#     from_dates <- seq(lubridate::as_date(from), lubridate::as_date(to), by = "395 day")
+#     to_dates <- from_dates + 394
+#     # Last one needs to be up to "to" - and add 1 extra day, else single-day
+#     # requests don't work
+#     to_dates[length(to_dates)] <- lubridate::as_date(to) + 1
+#     
+#     
+#     # Initialise an empty data frame
+#     weather <- data.frame()
+#     
+#     
+#     for (i in seq_along(from_dates)) {
+#         
+#         # Make start date into correct format, and extract numbers from end date
+#         from_day <- gsub("-", "/", as.character(from_dates[i]))
+#         day_end <- lubridate::day(to_dates[i])
+#         month_end <- lubridate::month(to_dates[i])
+#         year_end <- lubridate::year(to_dates[i])
+#         
+#         
+#         
+#         
+#         # Set up the URL query (EGTG is closest location to Bath)
+#         url <- paste0("https://www.wunderground.com/history/airport/EGTG/",
+#                       from_day,
+#                       "/CustomHistory.html?dayend=", day_end,
+#                       "&monthend=", month_end,
+#                       "&yearend=", year_end,
+#                       "&req_city=&req_state=&req_statename=&reqdb.zip=&reqdb.magic=&reqdb.wmo=")
+#         
+#         # Get the HTML content of the webpage
+#         wg <- xml2::read_html(url)
+#         
+#         # Find the second table on the webpage (the massive weather table)
+#         wgtab <- rvest::html_table(wg, header = FALSE)[[2]]
+#         
+#         # Set column names
+#         names(wgtab) <- c("GMT", "max_temp_c", "mean_temp_c",
+#                           "min_temp_c", "max_dewpoint_c", "mean_dewpoint_c",
+#                           "min_dewpoint_c", "max_humidity", "mean_humidity",
+#                           "min_humidity", "max_pressure_hpa",
+#                           "mean_pressure_hpa", "min_pressure_hpa",
+#                           "max_visibility_km", "mean_visibility_km", "min_visibility_km",
+#                           "max_wind_kmph", "mean_wind_kmph",
+#                           "max_gust_kmph", "precip_mm", "precip_type")
+#         
+#         # The GMT column of the table currently contains years, months AND days;
+#         # we'll use regex to separate them out into new columns
+#         #   First, if GMT contains a 1 or 2-digit number then this must be a day
+#         #   number, so put this number into a new column; or put in an NA if GMT
+#         #   did NOT contain a1 or 2-digit number
+#         wgtab <- dplyr::mutate(wgtab, day = ifelse(grepl("^\\d{1,2}$", GMT), GMT, NA),
+#                                # Do the same for 3-character strings (month names)
+#                                month = ifelse(grepl("^[A-Za-z]{3}$", GMT), GMT, NA),
+#                                # Do the same for 4-digit numbers (year numbers)
+#                                year = ifelse(grepl("^\\d{4}$", GMT), GMT, NA)) %>%
+#             # Whenever there's an NA in the month or year columns (i.e. most of the
+#             # time!) fill in each block of NAs with the first previous non-NA value;
+#             #   e.g. Jan  becomes  Jan
+#             #        NA            Jan
+#             #        NA            Jan
+#             #        Feb           Feb
+#             #        NA            Feb
+#             dplyr::mutate(month = zoo::na.locf(month, na.rm = FALSE),
+#                           year = zoo::na.locf(year, na.rm = FALSE)) %>%
+#             # Wherever there's an NA in the day column, this was a row containing
+#             # (unnecessary) headers, rather than data; so we drop these rows
+#             dplyr::filter(!is.na(day)) %>%
+#             # Now we stick the year-month-day columns together and convert to a date
+#             dplyr::mutate(Date = lubridate::ymd(paste(year, month, day, sep = "-"))) %>%
+#             # Then we can drop the old GMT column and the year-month-day columns
+#             dplyr::select(-day, -month, -year, -GMT) %>%
+#             # Re-order the columns to get Date on the left (currently on the right)
+#             dplyr::select(Date, dplyr::everything()) %>%
+#             # Lastly, the max_gust_kmph column is always empty, and precip_type
+#             # column needs splitting into separate columns
+#             dplyr::mutate("was_rainy" = grepl("Rain", precip_type),
+#                           "was_snowy" = grepl("Snow", precip_type),
+#                           "was_foggy" = grepl("Fog", precip_type)) %>%
+#             dplyr::select(-max_gust_kmph, -precip_type)
+#         
+#         
+#         # Add this set or records to the table
+#         weather <- dplyr::bind_rows(weather, wgtab)
+#         
+#     }
+#     
+#     # Return the table! (Trim the last row, because remember we had to ask for 1
+#     # extra day)
+#     weather[1:(nrow(weather)-1), ]
+# }
