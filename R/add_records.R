@@ -69,8 +69,7 @@ refuel_crude <- function(x) {
     names(x),
     c("id", "lastupdate", "name", "description", "capacity", "status", 
       "occupancy", "percentage", "easting", "northing", "dateuploaded", 
-      "location", "location_address", "location_city", "location_state", 
-      "location_zip")
+      "location")
   )) {
     stop("Column mismatch! Make sure you're adding to a data frame",
          " which came from get_all_crude().")
