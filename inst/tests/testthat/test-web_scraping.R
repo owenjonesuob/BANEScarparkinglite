@@ -6,19 +6,20 @@ has_internet <- function() {
 }
 
 
-test_that("Rugby", {
-    
-    skip_if(!has_internet())
-    
-    
-    rugby <- get_rugby(c("2015", "2016"))
-    expect_equal(nrow(rugby), 34)
-    
-})
 
+# Functions are broken so have been removed, for now
 
-# Function is broken so has been removed, for now
-
+# test_that("Rugby", {
+#     
+#     skip_if(!has_internet())
+#     
+#     
+#     rugby <- get_rugby(c("2015", "2016"))
+#     expect_equal(nrow(rugby), 34)
+#     
+# })
+# 
+# 
 # test_that("Weather", {
 #     
 #     skip_if(!has_internet())

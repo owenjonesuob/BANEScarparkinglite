@@ -1,3 +1,5 @@
+## Deprecated for now - requires significant work following changes to webpage
+
 #' Scrape Bath Rugby match dates, kick-off times and results
 #'
 #' Web scraping function to gather dates and times of Bath Rugby matches, and
@@ -21,6 +23,10 @@
 #' @export
 
 get_rugby <- function(x) {
+    
+    ### TO FIX
+    return("Results not available, for now :(")
+    
     
     # Set up data frame, to be added to shortly
     rugby <- data.frame(GMT = character(0), HomeWin = logical(0))
