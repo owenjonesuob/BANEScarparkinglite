@@ -1,3 +1,28 @@
+BANEScarparkinglite v0.1.3 (Release date: 2019-08-05)
+=====================================================
+
+Bugfixes:
+
+* Bath Hacked datastore API endpoint updated
+
+Deletions:
+
+* Bath Rugby's website seems to be having some trouble displaying information about results from past seasons - so `get_rugby` has been removed until something can be done about it...
+
+
+
+
+BANEScarparkinglite v0.1.2 (Release date: 2018-06-30)
+=====================================================
+
+Deletions:
+
+* Changes to the Wunderground website have left `get_daily_weather` floundering - it has been removed until a suitable alternative can be found!
+
+
+
+
+
 BANEScarparkinglite v0.1.1 (Release date: 2018-01-20)
 =====================================================
 

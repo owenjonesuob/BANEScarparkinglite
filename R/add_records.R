@@ -22,15 +22,21 @@
 #' @export
 
 get_all_crude <- function() {
-    token <- "3YCzwzu21i55UgommFeIikrkm"
-    link <- paste0("https://data.bathhacked.org/resource/fn2s-zq2k.csv?",
-                   "$limit=10000000&$order=dateuploaded&",
-                   "$$app_token=", token)
-    message("Making request to Socrata Open Data API...")
-    df <- readr::read_csv(link, col_types = "iTcicTciiiiciiic")
-    message(sprintf("Downloaded all %i records from Bath: Hacked datastore!",
-                    nrow(df)))
-    df
+  
+  token <- "npLnanLztLZey7gXvzgZ9tiS6"
+  
+  link <- paste0("https://data.bathhacked.org/resource/x29s-cczc.csv?",
+                 "$limit=4000000&$order=dateuploaded&",
+                 "$$app_token=", token)
+  
+  message("Making request to Socrata Open Data API (please be patient)...")
+  
+  df <- readr::read_csv(link, col_types = "cTcciciiiiTc")
+  
+  message(sprintf("Downloaded all %i records from Bath: Hacked datastore!",
+                  nrow(df)))
+  
+  df
 }
 
 
@@ -58,31 +64,39 @@ get_all_crude <- function() {
 #' @export
 
 refuel_crude <- function(x) {
-    if (!identical(names(x), c("capacity", "dateuploaded", "description",
-                               "easting", "id", "lastupdate", "location",
-                               "location_address", "location_city",
-                               "location_state", "location_zip",
-                               "name", "northing", "occupancy", "percentage",
-                               "status")))
-        stop(paste0("Column mismatch! Make sure you're adding to a data frame",
-                    " which came from get_all_crude."))
-    token <- "3YCzwzu21i55UgommFeIikrkm"
-    lastdt <- toString(max(x$dateuploaded))
-    lastdtstr <- paste0("'", substr(lastdt, 1, 10), "T", substr(lastdt, 12, 19),
-                        ".000'")
-    new_list <- httr::GET("https://data.bathhacked.org/resource/fn2s-zq2k.csv",
-                          query = list("$limit" = "10000000",
-                                       "$order" = "dateuploaded",
-                                       "$where" = paste0("dateuploaded > ",
-                                                         lastdtstr),
-                                       "$$app_token" = token))
-    new_records <- httr::content(new_list,
-                                 "parsed", col_types = "iTcicTciiiiciiic")
-    n <- nrow(new_records)
-    message(sprintf(paste0("Added %d new records from Bath: Hacked datastore!",
-                           " \n  Records added: %s to %s"),
-                    n, new_records$lastupdate[1], new_records$lastupdate[n]))
-    rbind(x, new_records)
+  
+  if (!identical(
+    names(x),
+    c("id", "lastupdate", "name", "description", "capacity", "status", 
+      "occupancy", "percentage", "easting", "northing", "dateuploaded", 
+      "location")
+  )) {
+    stop("Column mismatch! Make sure you're adding to a data frame",
+         " which came from get_all_crude().")
+  }
+  
+  token <- "npLnanLztLZey7gXvzgZ9tiS6"
+  
+  lastdt <- toString(max(x$dateuploaded))
+  
+  lastdtstr <- paste0("'", substr(lastdt, 1, 10),
+                      "T", substr(lastdt, 12, 19), ".000'")
+  
+  new_list <- httr::GET("https://data.bathhacked.org/resource/x29s-cczc.csv",
+                        query = list("$limit" = "10000000",
+                                     "$order" = "dateuploaded",
+                                     "$where" = paste0("dateuploaded > ",
+                                                       lastdtstr),
+                                     "$$app_token" = token))
+  
+  new_records <- httr::content(new_list, "parsed", col_types = "cTcciciiiiTc")
+  
+  n <- nrow(new_records)
+  message(sprintf(paste0("Added %d new records from Bath: Hacked datastore!",
+                         " \n  Records added: %s to %s"),
+                  n, new_records$lastupdate[1], new_records$lastupdate[n]))
+  
+  rbind(x, new_records)
 }
 
 
@@ -111,32 +125,32 @@ refuel_crude <- function(x) {
 #' @export
 
 refuel <- function(x, max_prop = 1.1, first_upload = FALSE) {
-    if (!identical(names(x), c("Name", "LastUpdate", "DateUploaded",
-                               "Occupancy", "Capacity", "Status",
-                               "Proportion")))
-        stop(paste0("Column mismatch! Make sure you're adding to a data frame",
-                    " which has been \"refined\"."))
-    token <- "3YCzwzu21i55UgommFeIikrkm"
-    lastdt <- toString(max(x$DateUploaded))
-    lastdtstr <- paste0("'", substr(lastdt, 1, 10), "T", substr(lastdt, 12, 19),
-                        ".000'")
-    new_list <- httr::GET("https://data.bathhacked.org/resource/fn2s-zq2k.csv",
-                          query = list("$limit" = "10000000",
-                                       "$order" = "dateuploaded",
-                                       "$where" = paste0("dateuploaded > ",
-                                                         lastdtstr),
-                                       "$$app_token" = token))
-    new_records <- httr::content(new_list,
-                                 "parsed", col_types = "iTcicTciiiiciiic")
-    refined <- refine(new_records, max_prop = max_prop,
-                                       first_upload = first_upload)
-    added <- refine.deduplicate(rbind(x, refined),
-                                first_upload = first_upload)
-    n <- nrow(added) - nrow(x)
-    message(sprintf(paste0("Refined and added %d new records from Bath: Hacked",
-                           " datastore!\n  Records added: %s to %s"),
-                    n, new_records$lastupdate[1], new_records$lastupdate[n]))
-    added
+  if (!identical(names(x), c("Name", "LastUpdate", "DateUploaded",
+                             "Occupancy", "Capacity", "Status",
+                             "Proportion")))
+    stop(paste0("Column mismatch! Make sure you're adding to a data frame",
+                " which has been \"refined\"."))
+  token <- "npLnanLztLZey7gXvzgZ9tiS6"
+  lastdt <- toString(max(x$DateUploaded))
+  lastdtstr <- paste0("'", substr(lastdt, 1, 10), "T", substr(lastdt, 12, 19),
+                      ".000'")
+  new_list <- httr::GET("https://data.bathhacked.org/resource/x29s-cczc.csv",
+                        query = list("$limit" = "4000000",
+                                     "$order" = "dateuploaded",
+                                     "$where" = paste0("dateuploaded > ",
+                                                       lastdtstr),
+                                     "$$app_token" = token))
+  new_records <- httr::content(new_list,
+                               "parsed", col_types = "cTcciciiiiTc")
+  refined <- refine(new_records, max_prop = max_prop,
+                    first_upload = first_upload)
+  added <- refine.deduplicate(rbind(x, refined),
+                              first_upload = first_upload)
+  n <- nrow(added) - nrow(x)
+  message(sprintf(paste0("Refined and added %d new records from Bath: Hacked",
+                         " datastore!\n  Records added: %s to %s"),
+                  n, new_records$lastupdate[1], new_records$lastupdate[n]))
+  added
 }
 
 
@@ -174,37 +188,37 @@ refuel <- function(x, max_prop = 1.1, first_upload = FALSE) {
 #' @export
 
 get_range_crude <- function(from = NULL, to = NULL, abbrs = NULL) {
-    
-    from_dt <- lubridate::as_datetime(from)
-    to_dt <- lubridate::as_datetime(to)
-    
-    token <- "3YCzwzu21i55UgommFeIikrkm"
-    if (!is.null(abbrs)) {
-        full <- c("Avon%20Street%20CP", "Charlotte%20Street%20CP", "Lansdown%20P%2BR",
-                   "Newbridge%20P%2BR", "Odd%20Down%20P%2BR", "Podium%20CP",
-                   "SouthGate%20General%20CP", "SouthGate%20Rail%20CP",
-                   "test%20car%20park")
-        names(full) <- c("as", "cs", "l", "n", "od", "p", "sg", "sr", "t")
-        abbrsfull <- full[abbrs]
-        abbrsstring <- paste(abbrsfull, collapse = "%27,%20%27")
-    }
-    link <- paste0("https://data.bathhacked.org/resource/fn2s-zq2k.csv?",
-                   "$limit=10000000&$order=dateuploaded",
-                   ifelse(is.null(from), "",
-                          paste0("&$where=dateuploaded%20>=%20%27",
-                                 gsub(" ", "T", (from_dt - 0.5)), "%27")),
-                   ifelse(is.null(to), "",
-                          paste0(ifelse(is.null(from), "&$where=", "%20and%20"),
-                                 "dateuploaded%20<=%20%27",
-                                 gsub(" ", "T", (to_dt - 0.5)), "%27")),
-                   ifelse(is.null(abbrs), "",
-                          paste0(ifelse(is.null(c(from, to)),
-                                        "&$where=", "%20and%20"),
-                                 "name%20in(%27", abbrsstring, "%27)")),
-                   "&$$app_token=", token)
-    message("Making request to Socrata Open Data API...")
-    df <- readr::read_csv(link, col_types = "iTcicTciiiiciiic")
-    message(sprintf("Downloaded %i records from Bath: Hacked datastore!",
-                    nrow(df)))
-    df
+  
+  from_dt <- lubridate::as_datetime(from)
+  to_dt <- lubridate::as_datetime(to)
+  
+  token <- "npLnanLztLZey7gXvzgZ9tiS6"
+  if (!is.null(abbrs)) {
+    full <- c("Avon%20Street%20CP", "Charlotte%20Street%20CP", "Lansdown%20P%2BR",
+              "Newbridge%20P%2BR", "Odd%20Down%20P%2BR", "Podium%20CP",
+              "SouthGate%20General%20CP", "SouthGate%20Rail%20CP",
+              "test%20car%20park")
+    names(full) <- c("as", "cs", "l", "n", "od", "p", "sg", "sr", "t")
+    abbrsfull <- full[abbrs]
+    abbrsstring <- paste(abbrsfull, collapse = "%27,%20%27")
+  }
+  link <- paste0("https://data.bathhacked.org/resource/x29s-cczc.csv?",
+                 "$limit=4000000&$order=dateuploaded",
+                 ifelse(is.null(from), "",
+                        paste0("&$where=dateuploaded%20>=%20%27",
+                               gsub(" ", "T", (from_dt - 0.5)), "%27")),
+                 ifelse(is.null(to), "",
+                        paste0(ifelse(is.null(from), "&$where=", "%20and%20"),
+                               "dateuploaded%20<=%20%27",
+                               gsub(" ", "T", (to_dt - 0.5)), "%27")),
+                 ifelse(is.null(abbrs), "",
+                        paste0(ifelse(is.null(c(from, to)),
+                                      "&$where=", "%20and%20"),
+                               "name%20in(%27", abbrsstring, "%27)")),
+                 "&$$app_token=", token)
+  message("Making request to Socrata Open Data API...")
+  df <- readr::read_csv(link, col_types = "cTcciciiiiTc")
+  message(sprintf("Downloaded %i records from Bath: Hacked datastore!",
+                  nrow(df)))
+  df
 }

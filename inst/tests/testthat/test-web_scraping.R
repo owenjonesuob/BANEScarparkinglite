@@ -6,27 +6,29 @@ has_internet <- function() {
 }
 
 
-test_that("Rugby", {
-    
-    skip_if(!has_internet())
-    
-    
-    rugby <- get_rugby(c("2015", "2016"))
-    expect_equal(nrow(rugby), 34)
-    
-})
 
+# Functions are broken so have been removed, for now
 
-
-test_that("Weather", {
-    
-    skip_if(!has_internet())
-    
-    
-    weather <- get_daily_weather("2015-01-01", "2016-05-01")
-    expect_equal(nrow(weather), 
-                 as.integer(as.Date("2016-05-01") - as.Date("2015-01-01")) + 1)
-})
+# test_that("Rugby", {
+#     
+#     skip_if(!has_internet())
+#     
+#     
+#     rugby <- get_rugby(c("2015", "2016"))
+#     expect_equal(nrow(rugby), 34)
+#     
+# })
+# 
+# 
+# test_that("Weather", {
+#     
+#     skip_if(!has_internet())
+#     
+#     
+#     weather <- get_daily_weather("2015-01-01", "2016-05-01")
+#     expect_equal(nrow(weather), 
+#                  as.integer(as.Date("2016-05-01") - as.Date("2015-01-01")) + 1)
+# })
 
 
 

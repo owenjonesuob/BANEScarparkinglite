@@ -1,8 +1,8 @@
 Package: BANEScarparkinglite
 Type: Package
 Title: Working with Car Parking Data for Bath and North East Somerset
-Version: 0.1.1
-Authors@R: c(person("Owen", "Jones", email = "olj23@bath.ac.uk", role = c("aut", "cre")),
+Version: 0.1.3
+Authors@R: c(person("Owen", "Jones", email = "joneso21164@gmail.com", role = c("aut", "cre")),
     person("Ryan", "Kenning", role = c("aut", "ctb")),
     person("Nick", "Howlett", role = "ctb"))
 Description: Contains functions for importing and working with the BANES car parking
@@ -22,8 +22,7 @@ Imports:
     rvest,
     utils,
     XML,
-    xml2,
-    zoo
+    xml2
 Suggests:
     testthat
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

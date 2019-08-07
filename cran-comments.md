@@ -1,14 +1,10 @@
-## Resubmission
-This is a resubmission. Issues resolved are:
-* URLs in Description field wrapped in angle brackets
-
 ## Test environments
-* Local Windows installation, R 3.4.3
-* Ubuntu 14.04 (on travis-ci), R 3.4.2
+* Local Windows installation, R 3.6.1
+* Ubuntu 16.04 via travis-ci, R 3.5.3 & R 3.6.1 & R-devel
 * Win-builder (devel and release)
 
 ## R CMD check results
-There were no ERRORs, WARNINGs or NOTEs. 
+There were no ERRORs, WARNINGs or NOTEs.
 
 ## Additional notes
-This is the first release of this package to CRAN. (In fact it is the author's first submission of any sort to CRAN.) 
+Only change is removal of one function (get_rugby()), which has broken due to problems with the website it was scraping.
