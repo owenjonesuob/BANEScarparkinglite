@@ -1,8 +1,23 @@
 # **BANEScarparkinglite: like BANEScarparking, but smaller!**
 
+![retired](https://img.shields.io/badge/lifecycle-retired-orange)
 [![Build Status](https://travis-ci.org/owenjonesuob/BANEScarparkinglite.svg?branch=master)](https://travis-ci.org/owenjonesuob/BANEScarparkinglite)
 [![codecov.io](https://codecov.io/github/owenjonesuob/BANEScarparkinglite/coverage.svg?branch=master)](https://codecov.io/github/owenjonesuob/BANEScarparkinglite?branch=master)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/BANEScarparkinglite)](https://cran.r-project.org/package=BANEScarparkinglite)
+
+
+---
+
+## BANEScarparkinglite is retiring
+
+We had a blast. This little package, `{BANEScarparkinglite}` (and its big brother [`{BANEScarparking}`](https://github.com/owenjonesuob/BANEScarparking) did its job splendidly for several years: simplifying access to the BANES historic car park occupancy dataset for our original group at BathML, and for independent researchers at Bath Uni and beyond, and for car park occupancy enthusiasts everywhere.
+
+Over time, bits and pieces have broken and fallen off. The weather API was bought and closed by a private firm; the Bath Rugby website changed structure such that scraping became awkward; and now, at long last, Bath Hacked's marvellous datastore (the source underlying dataset of car parking records) has officially [been retired](https://www.bathhacked.org/news/retiring-the-datastore/).
+
+Though the data will soon once again be accessible through Bath Hacked's [shiny new datastore](https://data.bathhacked.org/), `{BANEScarparkinglite}` has served its purpose for now. As it heads into the sunset we wave fondly, and with an "au revoirparkinglite" we part ways, for now.
+
+---
+
 
 This is a stripped-down version of the [BANEScarparking](https://github.com/owenjonesuob/BANEScarparking) package. It contains functions for obtaining and working with the BANES car parking records from the [Bath: Hacked API](https://data.bathhacked.org/Government-and-Society/BANES-Historic-Car-Park-Occupancy/x29s-cczc), as well as some functions for getting other related datasets via web-scraping.
 

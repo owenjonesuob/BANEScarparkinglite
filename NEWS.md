@@ -1,3 +1,13 @@
+BANEScarparkinglite has retired (2020-04-13)
+========================================
+
+It's been a blast, but all good things must come to an end.
+
+See README.md for more details.
+
+
+
+
 BANEScarparkinglite v0.1.3 (Release date: 2019-08-05)
 =====================================================
 
